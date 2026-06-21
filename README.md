@@ -8,15 +8,21 @@ Počinje od nule.
 > Hronologija je u `docs/sessions/`.
 
 ## Trenutno stanje
-- **Faza:** Day-0 bootstrap završen. Još nema koda.
+- **Faza:** Bootstrap + web sloj postavljeni. Aplikacijskog koda još nema.
+- **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew),
+  servira placeholder.
 - **Stack:** nije odlučen.
-- **Sledeće:** odluka o stacku i prvom milestone-u.
+- **Sledeće:** odluka o stacku i prvom milestone-u; zameniti web placeholder.
 
 ## Infrastruktura
-- **Server:** `foxuno.dynu.net` (Ubuntu), user `balsam`. Sudo kod Flavija
-  (root komande: Claude priprema, Flavio izvršava).
-- **Repo:** `git@github.com:fladroid/xpong.git`, grana `main`.
-- **Home:** `/home/balsam/xpong`.
+- **Server:** `foxuno.dynu.net` (Ubuntu), javni IP `130.61.37.60`, user `balsam`.
+  Sudo kod Flavija (root komande: Claude priprema, Flavio izvršava).
+- **Repo (backend/docs):** `git@github.com:fladroid/xpong.git`, grana `main`,
+  home `/home/balsam/xpong`.
+- **Repo (web):** `git@github.com:fladroid/xpongweb.git`, grana `main`,
+  docroot `/var/www/xpong` (vlasnik `balsam`).
+- **Web:** domen `xpong.opik.net` (dynu) → foxuno; apache2 vhost-ovi
+  `xpong.opik.net.conf` (:80, redirect) i `xpong.opik.net-le-ssl.conf` (:443).
 - **Baza / drugi server:** ne koristi se.
 - **Alat:** `foxuno:run_command` za sve na foxuno.
 
@@ -26,7 +32,11 @@ komandi; sirovi izlaz prvo; fiksno otvaranje/zatvaranje sesije; server/repo je
 izvor istine, ne pamćenje.
 
 ## Struktura
-    xpong/
+    xpong/                   # backend/docs repo (/home/balsam/xpong)
     ├── README.md            # ovaj fajl — kanonsko stanje
     └── docs/
         └── sessions/        # hronološki zapisi sesija (session_NN.md)
+
+    xpongweb/                # web repo (/var/www/xpong)
+    ├── index.html           # placeholder
+    └── .gitignore

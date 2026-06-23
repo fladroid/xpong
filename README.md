@@ -1,18 +1,24 @@
 # xpong
 
 Treći pokušaj naslednika projekta **Pong** — browser-based platforma za
-treniranje AI agenata (self-play, DQN, genetski algoritmi, X-Ray overlay).
-Počinje od nule.
+treniranje AI agenata (self-play, DQN, genetski algoritmi, X-Ray overlay),
+predstavljena kao višestranični **X-Ray sajt**: svaka stranica je prozor u
+jednu fazu razvoja.
 
 > Kanonski README: drži SAMO trenutno stanje. Uvek čitaj poslednju verziju.
 > Hronologija je u `docs/sessions/`.
 
 ## Trenutno stanje
-- **Faza:** Bootstrap + web sloj postavljeni. Aplikacijskog koda još nema.
-- **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew),
-  servira placeholder.
-- **Stack:** nije odlučen.
-- **Sledeće:** odluka o stacku i prvom milestone-u; zameniti web placeholder.
+- **Faza:** Web skelet (M0) živ — chrome (header/nav/footer), i18n, teme.
+  Igra još nije implementirana.
+- **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
+  Portal verzija u footeru: **s03** (`XP_VERSION` u `app.js` — cache-dijagnostika).
+- **Stack:** statički, bez builda — vanilla JS + HTML5 canvas. Look & feel
+  pozajmljen iz buchenberga (`xpong.css`). i18n: en (baza), de, it, hr, sr
+  (ćirilica; struktura `sr.cyr` — latinica se može dodati aditivno).
+- **Sledeće (M1):** klasičan Pong (canvas, reketi, lopta, gol L/D, tastatura +
+  touch, responzivno); zatim popuna sadržaja landinga (istorija Ponga + X-Ray
+  okvir) i prevoda de/it/hr/sr.
 
 ## Infrastruktura
 - **Server:** `foxuno.dynu.net` (Ubuntu), javni IP `130.61.37.60`, user `balsam`.
@@ -24,7 +30,8 @@ Počinje od nule.
 - **Web:** domen `xpong.opik.net` (dynu) → foxuno; apache2 vhost-ovi
   `xpong.opik.net.conf` (:80, redirect) i `xpong.opik.net-le-ssl.conf` (:443).
 - **Baza / drugi server:** ne koristi se.
-- **Alat:** `foxuno:run_command` za sve na foxuno.
+- **Alat:** `foxuno:run_command` za sve na foxuno. Web fajlovi se pišu
+  heredoc-om direktno u docroot, pa commit u xpongweb.
 
 ## Metoda
 Radimo po METHOD dokumentu (project knowledge): show → OK → execute na svakoj
@@ -35,8 +42,11 @@ izvor istine, ne pamćenje.
     xpong/                   # backend/docs repo (/home/balsam/xpong)
     ├── README.md            # ovaj fajl — kanonsko stanje
     └── docs/
-        └── sessions/        # hronološki zapisi sesija (session_NN.md)
+        ├── PongPregledProjekta.md   # retrospektiva prethodnog Pong projekta
+        └── sessions/                # hronološki zapisi (session_NN.md)
 
     xpongweb/                # web repo (/var/www/xpong)
-    ├── index.html           # placeholder
+    ├── index.html           # landing (M0 skelet)
+    ├── xpong.css            # deljeni stil (adaptiran iz buchenberg.css)
+    ├── app.js               # i18n + chrome + teme; XP_VERSION
     └── .gitignore

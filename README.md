@@ -9,10 +9,12 @@ jednu fazu razvoja.
 > Hronologija je u `docs/sessions/`.
 
 ## Trenutno stanje
-- **Faza:** Web skelet (M0) živ — chrome (header/nav/footer), i18n, teme.
-  Igra još nije implementirana.
+- **Faza:** Landing (M0) dovršen — chrome (header/nav/footer), i18n, teme,
+  favicon (Pong motiv), „Reinforcement Learning Lab" oznaka u herou, i
+  Key Concepts grid (link na EN Wikipediju). Igra još nije implementirana.
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s03** (`XP_VERSION` u `app.js` — cache-dijagnostika).
+  Portal verzija u footeru: **s04** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
 - **Stack:** statički, bez builda — vanilla JS + HTML5 canvas. Look & feel
   pozajmljen iz buchenberga (`xpong.css`). i18n: en (baza), de, it, hr, sr
   (ćirilica; struktura `sr.cyr` — latinica se može dodati aditivno).
@@ -48,5 +50,8 @@ izvor istine, ne pamćenje.
     xpongweb/                # web repo (/var/www/xpong)
     ├── index.html           # landing (M0 skelet)
     ├── xpong.css            # deljeni stil (adaptiran iz buchenberg.css)
-    ├── app.js               # i18n + chrome + teme; XP_VERSION
+    ├── app.js               # i18n + chrome + teme; XP_VERSION; renderConcepts
+    ├── favicon.svg          # Pong motiv (injektuje se iz app.js)
+    ├── data/
+    │   └── concepts.json    # Key Concepts po stranici (commituje se)
     └── .gitignore

@@ -10,6 +10,7 @@ jednu fazu razvoja.
 
 ## Trenutno stanje
 - **Faza:** Landing (M0) dovršen — chrome (header/nav/footer), i18n, teme,
+  + About stranica (istorijsko-filozofski esej o Pongu i X-Ray stavu, sidebar,
   favicon (Pong motiv), „Reinforcement Learning Lab" oznaka u herou, i
   Key Concepts grid (link na EN Wikipediju). Igra još nije implementirana.
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
@@ -48,7 +49,8 @@ izvor istine, ne pamćenje.
         └── sessions/                # hronološki zapisi (session_NN.md)
 
     xpongweb/                # web repo (/var/www/xpong)
-    ├── index.html           # landing (M0 skelet)
+    ├── index.html           # landing (M0)
+    ├── about.html           # esej + sidebar (5 jezika)
     ├── xpong.css            # deljeni stil (adaptiran iz buchenberg.css)
     ├── app.js               # i18n + chrome + teme; XP_VERSION; renderConcepts
     ├── favicon.svg          # Pong motiv (injektuje se iz app.js)

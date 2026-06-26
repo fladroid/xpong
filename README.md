@@ -9,19 +9,19 @@ jednu fazu razvoja.
 > Hronologija je u `docs/sessions/`.
 
 ## Trenutno stanje
-- **Faza:** Landing (M0) dovršen — chrome (header/nav/footer), i18n, teme,
-  + About stranica (istorijsko-filozofski esej o Pongu i X-Ray stavu, sidebar,
-  favicon (Pong motiv), „Reinforcement Learning Lab" oznaka u herou, i
-  Key Concepts grid (link na EN Wikipediju). Igra još nije implementirana.
+- **Faza:** M1 dovršen — klasičan Pong igriv. Landing (M0) + About
+  (istorijsko-filozofski esej, sidebar, Key Concepts) + favicon, i sada
+  **The Game** (`game.html`/`game.js`): klasičan Pong za 2 igrača (w/s vs o/l,
+  + touch), responzivan canvas koji prati temu, HUD i18n u 5 jezika.
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s04** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  Portal verzija u footeru: **s07** (`XP_VERSION` u `app.js` — cache-dijagnostika;
   sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
 - **Stack:** statički, bez builda — vanilla JS + HTML5 canvas. Look & feel
   pozajmljen iz buchenberga (`xpong.css`). i18n: en (baza), de, it, hr, sr
   (ćirilica; struktura `sr.cyr` — latinica se može dodati aditivno).
-- **Sledeće (M1):** klasičan Pong (canvas, reketi, lopta, gol L/D, tastatura +
-  touch, responzivno); zatim popuna sadržaja landinga (istorija Ponga + X-Ray
-  okvir) i prevoda de/it/hr/sr.
+- **Sledeće (M2):** X-Ray overlay na zasebnoj stranici (predviđena putanja
+  lopte s odbijanjima — istinita, ne prosta strelica); settings panel s
+  podesivim parametrima (config→start disciplina).
 
 ## Infrastruktura
 - **Server:** `foxuno.dynu.net` (Ubuntu), javni IP `130.61.37.60`, user `balsam`.
@@ -51,6 +51,8 @@ izvor istine, ne pamćenje.
     xpongweb/                # web repo (/var/www/xpong)
     ├── index.html           # landing (M0)
     ├── about.html           # esej + sidebar (5 jezika)
+    ├── game.html            # M1 klasičan Pong (2 igrača, touch)
+    ├── game.js              # Pong engine (vanilla, canvas, theme-aware)
     ├── xpong.css            # deljeni stil (adaptiran iz buchenberg.css)
     ├── app.js               # i18n + chrome + teme; XP_VERSION; renderConcepts
     ├── favicon.svg          # Pong motiv (injektuje se iz app.js)

@@ -14,7 +14,7 @@ jednu fazu razvoja.
   **The Game** (`game.html`/`game.js`): klasičan Pong za 2 igrača (w/s vs o/l,
   + touch), responzivan canvas koji prati temu, HUD i18n u 5 jezika.
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s07** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  Portal verzija u footeru: **s08** (`XP_VERSION` u `app.js` — cache-dijagnostika;
   sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
 - **Stack:** statički, bez builda — vanilla JS + HTML5 canvas. Look & feel
   pozajmljen iz buchenberga (`xpong.css`). i18n: en (baza), de, it, hr, sr

@@ -9,19 +9,22 @@ jednu fazu razvoja.
 > Hronologija je u `docs/sessions/`.
 
 ## Trenutno stanje
-- **Faza:** M1 dovršen — klasičan Pong igriv. Landing (M0) + About
-  (istorijsko-filozofski esej, sidebar, Key Concepts) + favicon, i sada
-  **The Game** (`game.html`/`game.js`): klasičan Pong za 2 igrača (w/s vs o/l,
-  + touch), responzivan canvas koji prati temu, HUD i18n u 5 jezika.
+- **Faza:** M2 u toku — cigla 1 (X-Ray trajektorni zrak) dovršena.
+  Landing (M0) + About (esej, sidebar, Key Concepts) + favicon + **The Game**
+  (`game.html`/`game.js`: klasičan Pong za 2 igrača, w/s vs o/l + touch) + sada
+  **X-Ray** (`xray.html`/`xray.js`): predviđena putanja lopte čistom fizikom do
+  prve prepreke, dugme-prekidač on/off, na zasebnoj stranici. Fizika izdvojena u
+  deljeni `pong-core.js` (izvor za game.js i xray.js).
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s08** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  Portal verzija u footeru: **s09.2** (`XP_VERSION` u `app.js` — cache-dijagnostika;
   sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
 - **Stack:** statički, bez builda — vanilla JS + HTML5 canvas. Look & feel
   pozajmljen iz buchenberga (`xpong.css`). i18n: en (baza), de, it, hr, sr
   (ćirilica; struktura `sr.cyr` — latinica se može dodati aditivno).
-- **Sledeće (M2):** X-Ray overlay na zasebnoj stranici (predviđena putanja
-  lopte s odbijanjima — istinita, ne prosta strelica); settings panel s
-  podesivim parametrima (config→start disciplina).
+- **Sledeće (M2 cigla 2):** heatmap golova po kvadrantima (senka/metapodaci,
+  ne um) — granularnost se odlučuje gledajući žive golove. M2 nema inteligenciju
+  ikad; pravi agent pripada budućim RL stranicama. Parametri ispali iz M2
+  (konstante izolovane u pong-core za kasnije).
 
 ## Infrastruktura
 - **Server:** `foxuno.dynu.net` (Ubuntu), javni IP `130.61.37.60`, user `balsam`.
@@ -52,7 +55,10 @@ izvor istine, ne pamćenje.
     ├── index.html           # landing (M0)
     ├── about.html           # esej + sidebar (5 jezika)
     ├── game.html            # M1 klasičan Pong (2 igrača, touch)
-    ├── game.js              # Pong engine (vanilla, canvas, theme-aware)
+    ├── game.js              # M1 Pong: input/render/HUD (zove pong-core)
+    ├── pong-core.js         # deljena čista fizika (PongCore, castRay) — bez DOM
+    ├── xray.html            # M2 X-Ray stranica (zrak + sidebar infobox)
+    ├── xray.js              # M2 X-Ray: render + drawRay (PongCore consumer)
     ├── xpong.css            # deljeni stil (adaptiran iz buchenberg.css)
     ├── app.js               # i18n + chrome + teme; XP_VERSION; renderConcepts
     ├── favicon.svg          # Pong motiv (injektuje se iz app.js)

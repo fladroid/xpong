@@ -9,22 +9,26 @@ jednu fazu razvoja.
 > Hronologija je u `docs/sessions/`.
 
 ## Trenutno stanje
-- **Faza:** M2 u toku — cigla 1 (X-Ray trajektorni zrak) dovršena.
+- **Faza:** M2 u toku — cigla 1 (X-Ray zrak) dovršena; cigla 2 (heatmap golova)
+  u toku — mehanika + pobednik seta gotovi, **dugme i infobox za heatmap ostaju**.
   Landing (M0) + About (esej, sidebar, Key Concepts) + favicon + **The Game**
-  (`game.html`/`game.js`: klasičan Pong za 2 igrača, w/s vs o/l + touch) + sada
-  **X-Ray** (`xray.html`/`xray.js`): predviđena putanja lopte čistom fizikom do
-  prve prepreke, dugme-prekidač on/off, na zasebnoj stranici. Fizika izdvojena u
-  deljeni `pong-core.js` (izvor za game.js i xray.js).
+  (`game.html`/`game.js`: klasičan Pong za 2 igrača, w/s vs o/l + touch) +
+  **X-Ray** (`xray.html`/`xray.js`): (1) trajektorni zrak čistom fizikom do prve
+  prepreke (dugme-prekidač + taster `x`); (2) **heatmap golova** — uske trake uz
+  zid tamo gde lopta fizički ulazi u gol, gruba granularnost 4 trake, akumulira
+  kroz sesiju, **za sada samo taster `h`** (dugme tek dolazi). Pobednik seta
+  (do 11) prikazan ispod brojača; Reset čisti sve (brojači na nulu, prekidači off).
+  Fizika u deljenom `pong-core.js` (izvor za game.js i xray.js).
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s09.2** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  Portal verzija u footeru: **s11** (`XP_VERSION` u `app.js` — cache-dijagnostika;
   sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
 - **Stack:** statički, bez builda — vanilla JS + HTML5 canvas. Look & feel
   pozajmljen iz buchenberga (`xpong.css`). i18n: en (baza), de, it, hr, sr
   (ćirilica; struktura `sr.cyr` — latinica se može dodati aditivno).
-- **Sledeće (M2 cigla 2):** heatmap golova po kvadrantima (senka/metapodaci,
-  ne um) — granularnost se odlučuje gledajući žive golove. M2 nema inteligenciju
-  ikad; pravi agent pripada budućim RL stranicama. Parametri ispali iz M2
-  (konstante izolovane u pong-core za kasnije).
+- **Sledeće (dovršiti M2 ciglu 2):** dugme za heatmap (`#xp-btn-heat`) + i18n
+  `x_heat_on/off` (ključevi se već koriste u kodu, fale u app.js); drugi infobox
+  s objašnjenjem heatmapa (5 jezika). M2 nema inteligenciju ikad; pravi agent
+  pripada budućim RL stranicama. Parametri ispali iz M2 (konstante u pong-core).
 
 ## Infrastruktura
 - **Server:** `foxuno.dynu.net` (Ubuntu), javni IP `130.61.37.60`, user `balsam`.

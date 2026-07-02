@@ -9,29 +9,36 @@ jednu fazu razvoja.
 > Hronologija je u `docs/sessions/`.
 
 ## Trenutno stanje
-- **Faza:** M2 u toku — cigla 1 (X-Ray zrak) dovršena; cigla 2 (heatmap golova)
-  **suštinski dovršena** (mehanika + kontrole + i18n) — ostaje samo pun opis heatmapa
-  u infoboxu (za sada jedna rečenica u X-Ray boxu). Landing (M0) + About (esej,
-  sidebar, Key Concepts) + favicon + **The Game** (`game.html`/`game.js`: klasičan
-  Pong za 2 igrača, w/s vs o/l + touch) + **X-Ray** (`xray.html`/`xray.js`): (1)
-  trajektorni zrak čistom fizikom do prve prepreke; (2) **heatmap golova** — uske
-  trake uz zid gde lopta fizički ulazi u gol, gruba granularnost 4 trake, akumulira
-  kroz sesiju. X-Ray i Heatmap su **switchevi** (Buchenberg `.xp-toggle`; checkbox =
-  izvor istine, tasteri `x`/`h` sinhronizuju). Kontrole u dva reda: akcije
-  (Start/Reset) gore, switchevi dole. Bočne kutije = brza referenca tastera (bold
-  `W / S`, `O / L`); infobox **Navigacija** nosi pun opis kretanja (tastatura + touch).
-  Pobednik seta (do 11) ispod brojača; Reset čisti sve (brojači na nulu, switchevi off).
-  Fizika u deljenom `pong-core.js` (izvor za game.js i xray.js).
+- **Faza:** M2 — cigla 1 (zrak) ✅ i cigla 2 (heatmap golova) ✅ **kompletne**.
+  Landing (M0) + About (esej, sidebar, Key Concepts) + favicon + **The Game**
+  (`game.html`/`game.js`: klasičan Pong za 2 igrača, w/s vs o/l + touch) +
+  **Telemetrija** (`xray.html`/`xray.js` — fajlovi i i18n prefiks `x_` zadržani
+  kao tehnički identitet; stranica se ZOVE Telemetry/Telemetrie/Telemetria/
+  Telemetrija/Телеметрија jer X-Ray je stav nad celim projektom, ne feature
+  jedne stranice — stav pomenut u intro s uputom na About): (1) **zrak** —
+  trajektorija čistom fizikom do prve prepreke, bleđi (×0.55) dok igra ne
+  teče; (2) **heatmap golova** — 4 trake uz svaki zid, tanki okviri traka
+  vidljivi čim se uključi (i pre golova), ispune po frekvenciji, akumulira
+  kroz sesiju. Oba su **switchevi** (Buchenberg `.xp-toggle`; checkbox = izvor
+  istine, tasteri `x`/`h` sinhronizuju); switch imenovan po sloju: Zrak/Beam,
+  Heatmap. Kontrole u dva reda: akcije (Start/Reset) gore, switchevi dole.
+  Tri infoboxa: **Zrak** (opis zraka + X-Ray stav), **Heatmap** (senka/
+  metapodaci, pun opis), **Navigacija** (tastatura + touch). Bočne kutije =
+  bold `W / S`, `O / L`. Pobednik seta (do 11) ispod brojača; Reset čisti sve.
+  **Key Concepts x4**: Pong, Telemetry, Light beam, Heat map (EN + EN
+  Wikipedia, `data/concepts.json` sekcija `xray`). Fizika u deljenom
+  `pong-core.js`.
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s12** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  Portal verzija u footeru: **s13** (`XP_VERSION` u `app.js` — cache-dijagnostika;
   sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
 - **Stack:** statički, bez builda — vanilla JS + HTML5 canvas. Look & feel
   pozajmljen iz buchenberga (`xpong.css`). i18n: en (baza), de, it, hr, sr
   (ćirilica; struktura `sr.cyr` — latinica se može dodati aditivno).
-- **Sledeće:** pun opis heatmapa u infoboxu (senka/metapodaci okvir, granularnost) —
-  kad Flavio odluči granularnost gledajući golove uživo (zasad gruba, 4 trake).
-  Kandidati: Key Concept kartica za xray; Key Concepts iz About eseja (crna kutija,
-  emergencija, neuronska mreža, transformer); health_check.py; sr.lat aditivno.
+  PAŽNJA: escape oblici u `app.js` su MEŠANI i unutar istog bloka (`\uXXXX`,
+  `\xNN`, sirov UTF-8) — pre svakog sidrenja proveriti stvarni bajt-oblik.
+- **Sledeće:** M2 cigla 3+ ili prelaz na M3 (RL faze) — odluka pravca.
+  Kandidati: Key Concepts iz About eseja (crna kutija, emergencija, neuronska
+  mreža, transformer); health_check.py; sr.lat aditivno.
   M2 nema inteligenciju ikad; pravi agent pripada budućim RL stranicama.
 
 ## Infrastruktura
@@ -65,8 +72,8 @@ izvor istine, ne pamćenje.
     ├── game.html            # M1 klasičan Pong (2 igrača, touch)
     ├── game.js              # M1 Pong: input/render/HUD (zove pong-core)
     ├── pong-core.js         # deljena čista fizika (PongCore, castRay) — bez DOM
-    ├── xray.html            # M2 X-Ray stranica (zrak + sidebar infobox)
-    ├── xray.js              # M2 X-Ray: render + drawRay (PongCore consumer)
+    ├── xray.html            # M2 Telemetrija stranica (zrak + heatmap + infoboxi)
+    ├── xray.js              # M2 Telemetrija: render, drawRay, drawHeatmap
     ├── xpong.css            # deljeni stil (adaptiran iz buchenberg.css)
     ├── app.js               # i18n + chrome + teme; XP_VERSION; renderConcepts
     ├── favicon.svg          # Pong motiv (injektuje se iz app.js)

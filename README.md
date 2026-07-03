@@ -9,7 +9,7 @@ jednu fazu razvoja.
 > Hronologija je u `docs/sessions/`.
 
 ## Trenutno stanje
-- **Faza:** M2 — cigla 1 (zrak) ✅ i cigla 2 (heatmap golova) ✅ **kompletne**.
+- **Faza:** M3 (RL faze) otvoren — stranica 1 `rl1` cigla 1 ✅ (vidi ispod). M2 kompletan: cigla 1 (zrak) ✅, cigla 2 (heatmap golova) ✅.
   Landing (M0) + About (esej, sidebar, Key Concepts) + favicon + **The Game**
   (`game.html`/`game.js`: klasičan Pong za 2 igrača, w/s vs o/l + touch) +
   **Telemetrija** (`xray.html`/`xray.js` — fajlovi i i18n prefiks `x_` zadržani
@@ -30,20 +30,28 @@ jednu fazu razvoja.
   **Key Concepts x4**: Pong, Telemetry, Light beam, Heat map (EN + EN
   Wikipedia, `data/concepts.json` sekcija `xray`). Fizika u deljenom
   `pong-core.js`.
+- **M3 stranica 1 — `rl1`** (`rl1.html`/`rl1.js`, `data-page="rl1"`, prefiks
+  `r1_`; naslov „RL 1 — Random walker"): klon Telemetrije (isti porodični layout —
+  sidebar, Zrak/Heatmap switchevi, infoboxi). Desni reket je **random-walker agent**
+  (gore/stoj/dole nasumično, ×2 korak, BEZ učenja); levi je čovek (W/S/touch) ili
+  agent preko `.xp-toggle` mode-prekidača. Zrak/heatmap čitaju SVET (putanja, golovi),
+  ne agenta — uma još nema. Infobox „This page — RL 1" + Navigacija (statični EN;
+  i18n `r1_*` za s15). Key Concept: 🎲 Random walk (`concepts.json` sekcija `rl1`).
+  Nije u navu (direktan URL) do s15.
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s13** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  Portal verzija u footeru: **s14** (`XP_VERSION` u `app.js` — cache-dijagnostika;
   sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
 - **Stack:** statički, bez builda — vanilla JS + HTML5 canvas. Look & feel
   pozajmljen iz buchenberga (`xpong.css`). i18n: en (baza), de, it, hr, sr
   (ćirilica; struktura `sr.cyr` — latinica se može dodati aditivno).
   PAŽNJA: escape oblici u `app.js` su MEŠANI i unutar istog bloka (`\uXXXX`,
   `\xNN`, sirov UTF-8) — pre svakog sidrenja proveriti stvarni bajt-oblik.
-- **Sledeće:** M2 kompletiran (cigle 1–2 + s13 dopune telemetrije). Sledeće:
-  **M3 (RL faze)** — nove stranice, jedna po fazi, uvode pravog agenta koji
-  uči (Q-tabele/trening petlja) nad postojećim čistim pong-core.
-  Kandidati: Key Concepts iz About eseja (crna kutija, emergencija, neuronska
-  mreža, transformer); health_check.py; sr.lat aditivno.
-  M2 nema inteligenciju ikad; pravi agent pripada budućim RL stranicama.
+- **Sledeće (s15):** i18n `r1_*` ×5 za rl1 (This page, Navigacija, mode-label,
+  naslov); nav-stavka za rl1 u meniju (gde u niz — pre Stabilization?); naslovi
+  („otom potom"); dopuna Key Concepts rl1 (RL, Agent). Zatim **stranica 2 — agent
+  koji UČI (Q-learning)**: uvodi telemetriju UMA (Q-vrednosti) nad pong-core.
+  Ostali kandidati: health_check.py; Key Concepts iz About eseja (crna kutija,
+  emergencija, neuronska mreža, transformer); sr.lat aditivno.
 
 ## Infrastruktura
 - **Server:** `foxuno.dynu.net` (Ubuntu), javni IP `130.61.37.60`, user `balsam`.
@@ -63,6 +71,9 @@ Radimo po METHOD dokumentu (project knowledge): show → OK → execute na svako
 komandi; sirovi izlaz prvo; fiksno otvaranje/zatvaranje sesije; server/repo je
 izvor istine, ne pamćenje.
 
+## Pedagoška granularnost (pravilo M3+)
+Granica pojma je obavezna: ono što je pojmovno ili istorijski odvojeno mora i kod nas biti odvojeno prikazano. Forma odvajanja (zasebna stranica ili switch na istoj stranici) bira se prema profilu korisnika, ne prema nama — za publiku van struke switch se percipira kao još jedan feature i pojmovna granica se gubi, dok nova stranica tera novost da se opazi. Kod pojmova s pedagoškom težinom (Q-learning, DQN…) default naginje ka zasebnoj stranici; ponavljanje zajedničkog konteksta među stranicama je namerno — pozadina naspram koje se ističe ono novo. Implementacioni koraci (skelet, telemetrija, i18n, Key Concepts) nisu pojmovi i ne dobijaju svoje mesto — oni su faze gradnje unutar stranice. Posledica za M3: „agent koji ne uči“ i „agent koji uči“ su dve stranice, ne dva stanja jedne. Switch je ravnopravan sa zasebnom stranicom (porodica stranica deli look & feel, pa switch reciklira umesto da duplira); kad switch nosi pojmovnu granicu, mora biti eksplicitno uokviren (naslov + objašnjenje), inače je briše.
+
 ## Struktura
     xpong/                   # backend/docs repo (/home/balsam/xpong)
     ├── README.md            # ovaj fajl — kanonsko stanje
@@ -78,6 +89,8 @@ izvor istine, ne pamćenje.
     ├── pong-core.js         # deljena čista fizika (PongCore, castRay) — bez DOM
     ├── xray.html            # M2 Telemetrija stranica (zrak + heatmap + infoboxi)
     ├── xray.js              # M2 Telemetrija: render, drawRay, drawHeatmap
+    ├── rl1.html             # M3 str.1 Random walker (klon xray + agent)
+    ├── rl1.js               # M3 str.1: random-walker agent nad pong-core
     ├── xpong.css            # deljeni stil (adaptiran iz buchenberg.css)
     ├── app.js               # i18n + chrome + teme; XP_VERSION; renderConcepts
     ├── favicon.svg          # Pong motiv (injektuje se iz app.js)

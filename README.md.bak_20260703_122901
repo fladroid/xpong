@@ -17,10 +17,8 @@ jednu fazu razvoja.
   Telemetrija/Телеметрија jer X-Ray je stav nad celim projektom, ne feature
   jedne stranice — stav pomenut u intro s uputom na About): (1) **zrak** —
   trajektorija čistom fizikom do prve prepreke, bleđi (×0.55) dok igra ne
-  teče; na servisu iz centra nema zraka/markera, loptica tada nosi prsten
-  zrak-ON (znak da je sloj aktivan, simetrično heatmap okvirima); (2) **heatmap golova** — 4 trake uz svaki zid, tanki okviri traka
-  vidljivi čim se uključi (i pre golova), ispune po frekvenciji + broj golova
-  u traci (surface disk + text broj, tematski, čita se u obe teme), akumulira
+  teče; (2) **heatmap golova** — 4 trake uz svaki zid, tanki okviri traka
+  vidljivi čim se uključi (i pre golova), ispune po frekvenciji, akumulira
   kroz sesiju. Oba su **switchevi** (Buchenberg `.xp-toggle`; checkbox = izvor
   istine, tasteri `x`/`h` sinhronizuju); switch imenovan po sloju: Zrak/Beam,
   Heatmap. Kontrole u dva reda: akcije (Start/Reset) gore, switchevi dole.
@@ -38,9 +36,7 @@ jednu fazu razvoja.
   (ćirilica; struktura `sr.cyr` — latinica se može dodati aditivno).
   PAŽNJA: escape oblici u `app.js` su MEŠANI i unutar istog bloka (`\uXXXX`,
   `\xNN`, sirov UTF-8) — pre svakog sidrenja proveriti stvarni bajt-oblik.
-- **Sledeće:** M2 kompletiran (cigle 1–2 + s13 dopune telemetrije). Sledeće:
-  **M3 (RL faze)** — nove stranice, jedna po fazi, uvode pravog agenta koji
-  uči (Q-tabele/trening petlja) nad postojećim čistim pong-core.
+- **Sledeće:** M2 cigla 3+ ili prelaz na M3 (RL faze) — odluka pravca.
   Kandidati: Key Concepts iz About eseja (crna kutija, emergencija, neuronska
   mreža, transformer); health_check.py; sr.lat aditivno.
   M2 nema inteligenciju ikad; pravi agent pripada budućim RL stranicama.

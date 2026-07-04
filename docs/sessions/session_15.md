@@ -47,3 +47,17 @@
 - Nav-stavka za rl1; KC dopuna rl1 (Reinforcement learning, Agent); naslovi („otom potom").
 - README PAŽNJA blok: dopisati recept (tabela escape+indent + „doslovni nizovi") — da upozorenje postane uputstvo.
 - (kandidat) health_check.py.
+
+## Ispravka (ista sesija, posle prvog commita ovog doca)
+- Tvrdnja „app.js netaknut" u Završnom stanju iznad je NETAČNA. Zatvaranje je
+  otkrilo `M app.js`: upis r1_* ×5 JESTE prošao (30 linija, s06 obrazac,
+  doslovni escape nizovi) — verifikovano: 6 ključeva × 5 blokova, hr `\u`/6sp,
+  sr.cyr `\u`/8sp, sintaksa čista (awk lažno-pozitiv na it liniji 229 razrešen:
+  `\'` filter, 2 navodnika). Ključevi INERTNI (HTML/JS ožičenje tek u s16).
+  Committovano u xpongweb kao `b072470`.
+- Uzrok pogrešne tvrdnje: zaključak pisan iz sećanja na raniji prazan diff,
+  pre čitanja `git status` izlaza; bekap obrisan u istoj komandi pre potvrde.
+- Ledger dopuna: **završno stanje se piše ISKLJUČIVO iz svežeg `git status`
+  oba repoa, posle svih izmena; bekap se briše tek posle te potvrde.**
+- s16 ostaje: rl1.html `data-i18n` atributi + `<title>`, rl1.js mode-label
+  logika — tek tada r1_* ključevi ožive i tada se diže XP_VERSION.

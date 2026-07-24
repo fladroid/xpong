@@ -48,7 +48,7 @@ jednu fazu razvoja.
 - **Sledeće (s17):** nav-stavka za rl1 u meniju (gde u niz — pre Stabilization?); naslovi
   („otom potom"); dopuna Key Concepts rl1 (RL, Agent). Zatim **stranica 2 — agent
   koji UČI (Q-learning)**: uvodi telemetriju UMA (Q-vrednosti) nad pong-core.
-  Ostali kandidati: health_check.py; Key Concepts iz About eseja (crna kutija,
+  Ostali kandidati: Key Concepts iz About eseja (crna kutija,
   emergencija, neuronska mreža, transformer); sr.lat aditivno.
 
 ## Infrastruktura
@@ -66,8 +66,8 @@ jednu fazu razvoja.
 
 ## Metoda
 Radimo po METHOD dokumentu (project knowledge): show → OK → execute na svakoj
-komandi; sirovi izlaz prvo; fiksno otvaranje/zatvaranje sesije; server/repo je
-izvor istine, ne pamćenje.
+komandi; sirovi izlaz prvo; fiksno otvaranje/zatvaranje sesije (`health_check.py` za health
+snapshot); server/repo je izvor istine, ne pamćenje.
 
 ## Pedagoška granularnost (pravilo M3+)
 Granica pojma je obavezna: ono što je pojmovno ili istorijski odvojeno mora i kod nas biti odvojeno prikazano. Forma odvajanja (zasebna stranica ili switch na istoj stranici) bira se prema profilu korisnika, ne prema nama — za publiku van struke switch se percipira kao još jedan feature i pojmovna granica se gubi, dok nova stranica tera novost da se opazi. Kod pojmova s pedagoškom težinom (Q-learning, DQN…) default naginje ka zasebnoj stranici; ponavljanje zajedničkog konteksta među stranicama je namerno — pozadina naspram koje se ističe ono novo. Implementacioni koraci (skelet, telemetrija, i18n, Key Concepts) nisu pojmovi i ne dobijaju svoje mesto — oni su faze gradnje unutar stranice. Posledica za M3: „agent koji ne uči“ i „agent koji uči“ su dve stranice, ne dva stanja jedne. Switch je ravnopravan sa zasebnom stranicom (porodica stranica deli look & feel, pa switch reciklira umesto da duplira); kad switch nosi pojmovnu granicu, mora biti eksplicitno uokviren (naslov + objašnjenje), inače je briše.
@@ -75,6 +75,7 @@ Granica pojma je obavezna: ono što je pojmovno ili istorijski odvojeno mora i k
 ## Struktura
     xpong/                   # backend/docs repo (/home/balsam/xpong)
     ├── README.md            # ovaj fajl — kanonsko stanje
+    ├── health_check.py      # health snapshot (git, struktura, concepts.json, DNS, live site, apache)
     └── docs/
         ├── PongPregledProjekta.md   # retrospektiva prethodnog Pong projekta
         └── sessions/                # hronološki zapisi (session_NN.md)

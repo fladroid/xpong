@@ -35,21 +35,30 @@ jednu fazu razvoja.
   sidebar, Zrak/Heatmap switchevi, infoboxi). Desni reket je **random-walker agent**
   (gore/stoj/dole nasumično, ×2 korak, BEZ učenja); levi je čovek (W/S/touch) ili
   agent preko `.xp-toggle` mode-prekidača. Zrak/heatmap čitaju SVET (putanja, golovi),
-  ne agenta — uma još nema. Infobox „This page — RL 1" + Navigacija (i18n `r1_*` ožičen ×5, s16). Key Concept: 🎲 Random walk (`concepts.json` sekcija `rl1`).
+  ne agenta — uma još nema. Infobox „This page — RL 1" + Navigacija (i18n `r1_*` ožičen ×5, s16). Key Concepts ×3: 🧠 Reinforcement learning, 🤖 Agent, 🎲 Random walk (`concepts.json` sekcija `rl1`).
   U navu ("RL 1" / "РЛ 1", između Telemetrije i Stabilization) — s17.
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s17** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  Portal verzija u footeru: **s18** (`XP_VERSION` u `app.js` — cache-dijagnostika;
   sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
+- **Layout:** sve stranice dele okvir od 1200px (`#xp-page` /
+  `#xp-header-inner`), pa su poravnate s nav-redom; igra je dodatno
+  ograničena na `min(100%, 72vh)` (canvas je 800×500 sa `width:100%` i
+  `height:auto`, pa širina diktira visinu) — s18.
 - **Stack:** statički, bez builda — vanilla JS + HTML5 canvas. Look & feel
   pozajmljen iz buchenberga (`xpong.css`). i18n: en (baza), de, it, hr, sr
   (ćirilica; struktura `sr.cyr` — latinica se može dodati aditivno).
   PAŽNJA: escape oblici u `app.js` su MEŠANI i unutar istog bloka (`\uXXXX`,
   `\xNN`, sirov UTF-8) — pre svakog sidrenja proveriti stvarni bajt-oblik.
-- **Sledeće (s18):** dopuna Key Concepts rl1 (RL, Agent); naslovi
-  („otom potom"). Zatim **stranica 2 — agent
-  koji UČI (Q-learning)**: uvodi telemetriju UMA (Q-vrednosti) nad pong-core.
-  Ostali kandidati: Key Concepts iz About eseja (crna kutija,
-  emergencija, neuronska mreža, transformer); sr.lat aditivno.
+- **Sledeće (s19):** prvo dovršiti merenje iz s18 — koliko stanja agent
+  razlikuje (72.000 / 4.000 / 300); zatečene krive favorizuju ~4.000, ali
+  nezavisna replika je potvrdila samo brzinu (pun trening ≈ 5–15 s u browseru,
+  pa je slider brzine izvodljiv). Zatim **stranica 2 — agent koji UČI
+  (Q-learning)**: telemetrija UMA (Q-vrednosti) nad pong-core; slider brzine
+  vezan za Human/Agent prekidač (iznad praga levi mora biti agent), pa su
+  trening i partija dve tačke istog klizača, ne dva moda. Nasleđeno: naslovi
+  („otom potom"); README PAŽNJA → dopisati escape recept. Kandidati: sr.lat
+  aditivno; Key Concepts iz About eseja (crna kutija, emergencija, neuronska
+  mreža, transformer).
 
 ## Infrastruktura
 - **Server:** `foxuno.dynu.net` (Ubuntu), javni IP `130.61.37.60`, user `balsam`.

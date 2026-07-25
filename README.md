@@ -49,16 +49,38 @@ jednu fazu razvoja.
   (ćirilica; struktura `sr.cyr` — latinica se može dodati aditivno).
   PAŽNJA: escape oblici u `app.js` su MEŠANI i unutar istog bloka (`\uXXXX`,
   `\xNN`, sirov UTF-8) — pre svakog sidrenja proveriti stvarni bajt-oblik.
-- **Sledeće (s19):** prvo dovršiti merenje iz s18 — koliko stanja agent
-  razlikuje (72.000 / 4.000 / 300); zatečene krive favorizuju ~4.000, ali
-  nezavisna replika je potvrdila samo brzinu (pun trening ≈ 5–15 s u browseru,
-  pa je slider brzine izvodljiv). Zatim **stranica 2 — agent koji UČI
-  (Q-learning)**: telemetrija UMA (Q-vrednosti) nad pong-core; slider brzine
-  vezan za Human/Agent prekidač (iznad praga levi mora biti agent), pa su
-  trening i partija dve tačke istog klizača, ne dva moda. Nasleđeno: naslovi
-  („otom potom"); README PAŽNJA → dopisati escape recept. Kandidati: sr.lat
-  aditivno; Key Concepts iz About eseja (crna kutija, emergencija, neuronska
-  mreža, transformer).
+- **Merenje prostora stanja (završeno s19):** protiv random walkera,
+  3 varijante × 5 seedova × 12.000 epizoda, sa greedy evaluacijom odvojenom od
+  treninga. Kvalitet: srednja (4.000) 5,69 i fina (12.000) 5,81 izjednačene,
+  gruba (300) 3,51. Brzina: sve tri se preklapaju — nema razlike. **Odlučuje
+  pouzdanost, tj. širina raspona između seedova: srednja 2,67, fina 4,23,
+  gruba 6,40 — najpouzdanija je SREDINA.** Premalo pregrada meša različite
+  situacije, previše pregrada raspe iskustvo na previše mesta (prokletstvo
+  dimenzionalnosti). **Odluka: 4.000 podrazumevana na `rl2`**, gruba i fina kao
+  izbori koji pokazuju šta se gubi u svakom smeru. Napomena: 72.000 iz starog
+  Ponga nije reproducibilno bez dimenzije protivničkog reketa — fina je 12.000.
+- **Sledeće (s20):** implementacija **stranice 2 — `rl2`, agent koji UČI
+  (Q-learning)**. Dogovoren raspored: glavna kolona naslov → semafor → teren sa
+  mrežom stanja → deck (levo agent koji uči, centar Treniraj/Reset, desno
+  walker) → grubost (tri imenovane vrednosti, ne klizač) → grafikon → tri
+  pokazatelja; desna kolona 280px sa infoboxima, uključujući nov „Brzina
+  uređaja". **Jedan grafikon nosi dva pokazatelja:** svako pokretanje DODAJE
+  krivu preko prethodnih, pa razmak u snopu jeste pouzdanost — bez kompozitnog
+  broja. Grafikon mora nositi `max-width: min(100%, 72vh)` kao canvas i deck.
+  Auto-scroll do grafikona na početku treninga (pada ispod pregiba, a trening je
+  headless). Prvi korak implementacije: kontrola grubosti — jedini element bez
+  postojećeg obrasca (svi postojeći prekidači su on/off). Opseg je namerno uzak:
+  `rl2` = STANJE, `rl3` = UČENJE (Bellman, Q-tabela), `rl4` = EKSPLORACIJA.
+- **Samoštimovanje (dogovoreno s19):** trening u browseru koristi adaptivni
+  paket epizoda po `requestAnimationFrame` (meri prethodni, drži ispod ~8 ms) —
+  fiksan paket koji je na PC-u 3 ms na starijem telefonu traje 150 ms i zamrzava
+  UI. **Uslov: adaptacija mora biti dokumentovana** na stranici (infobox „Brzina
+  uređaja" sa izmerenim koraka/s); nedokumentovana adaptacija je crna kutija
+  protiv koje je ceo X-Ray stav. Minimum hardvera je browser od ~2015; Q-tabela
+  je 48 KB na 4.000 stanja. Sledi JS benchmark na PC/tablet/telefon.
+- **Nasleđeno:** naslovi („otom potom"); README PAŽNJA → dopisati escape recept.
+  Kandidati: sr.lat aditivno; Key Concepts iz About eseja (crna kutija,
+  emergencija, neuronska mreža, transformer).
 
 ## Infrastruktura
 - **Server:** `foxuno.dynu.net` (Ubuntu), javni IP `130.61.37.60`, user `balsam`.

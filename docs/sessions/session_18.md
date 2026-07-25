@@ -120,6 +120,16 @@ razgovor: modeli i podela rada po fazama sesije, pa pojmovna priprema stranice 2
   `titles.canonical` je jedini pouzdan izvor (dva sluga, oba 200, jedan redirect).
 - **Zatecen artefakt u sandboxu nije izvor istine.** Citati ga, ne brisati, ne
   graditi zakljucke bez nezavisne provere — i eksplicitno razdvojiti sta je cije.
+- **ISPRAVKA (s19): gornja stavka je nastala iz pogresne premise.** Sandbox je
+  izolovan i dostupan samo Claudeu; Flavio nikad ne radi na dva uredjaja niti u
+  dve sesije istovremeno. `qtest.py`/`qtest2.py`/`curves.json` bili su Claudeov
+  sopstveni rad: poziv alata je prekinut, akcija se izvrsila na disku, ali izlaz
+  nije stigao nazad u kontekst — fajl postoji, trag o njegovom nastanku ne. Greska
+  nije bila u okruzenju nego u zakljucivanju (egzoticna hipoteza o paralelnoj
+  sesiji umesto najjednostavnijeg objasnjenja). Ispravna lekcija: nepoznat fajl u
+  sandboxu sa poklapajucim timestampom je sopstveni rad izgubljen iz konteksta,
+  nikad tudji artefakt. Odbrana: `~/SANDBOX_LOG.md` (append PRE svake akcije) +
+  header u svakoj skripti.
 - **Protokol ne hvata propustene bolje ideje**, samo greske. Vizuelna provera svih
   stranica (i onih koje izmena nije trebalo da dotakne) je jedina odbrana.
 

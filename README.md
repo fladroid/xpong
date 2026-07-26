@@ -9,7 +9,7 @@ jednu fazu razvoja.
 > Hronologija je u `docs/sessions/`.
 
 ## Trenutno stanje
-- **Faza:** M3 (RL faze) otvoren — stranica 1 `rl1` cigla 1 ✅ (vidi ispod). M2 kompletan: cigla 1 (zrak) ✅, cigla 2 (heatmap golova) ✅.
+- **Faza:** M3 (RL faze) otvoren — stranica 1 `rl1` ✅, stranica 2 `rl2` ✅ (vidi ispod). M2 kompletan: cigla 1 (zrak) ✅, cigla 2 (heatmap golova) ✅.
   Landing (M0) + About (esej, sidebar, Key Concepts) + favicon + **The Game**
   (`game.html`/`game.js`: klasičan Pong za 2 igrača, w/s vs o/l + touch) +
   **Telemetrija** (`xray.html`/`xray.js` — fajlovi i i18n prefiks `x_` zadržani
@@ -37,9 +37,31 @@ jednu fazu razvoja.
   agent preko `.xp-toggle` mode-prekidača. Zrak/heatmap čitaju SVET (putanja, golovi),
   ne agenta — uma još nema. Infobox „This page — RL 1" + Navigacija (i18n `r1_*` ožičen ×5, s16). Key Concepts ×3: 🧠 Reinforcement learning, 🤖 Agent, 🎲 Random walk (`concepts.json` sekcija `rl1`).
   U navu ("RL 1" / "РЛ 1", između Telemetrije i Stabilization) — s17.
+- **M3 stranica 2 — `rl2`** (`rl2.html`/`rl2.js`, `data-page="rl2"`, prefiks `r2_`;
+  naslov „RL 2 — How the agent sees the world"): tema je **STANJE**, ne učenje.
+  Levi reket je agent koji uči (tabelarni Q), desni je random walker s prethodne stranice.
+  **Mreža stanja** preko terena crta X×Y — dve od pet dimenzija; smer, brzina i položaj
+  sopstvenog reketa ulaze u broj stanja ali nemaju mesto na terenu (to je poenta, ne propust).
+  Pregrada s lopticom se ističe; gore levo `state N / ukupno` — ceo svet agenta kao jedan ceo broj.
+  **Grubost** = segmentirani prekidač s tri imenovane vrednosti (ime iznad, broj ispod),
+  `4000` podrazumevano u markupu. **Trening** je headless, adaptivni paket po `rAF` (cilj < 8 ms),
+  greedy evaluacija odvojena od treninga. **Grafikon**: svako pokretanje DODAJE krivu;
+  tri pokazatelja — kvalitet, rasejanje (std. devijacija), koraka/s. `Start` zadržan pored
+  `Train` jer je igra uživo jedino mesto gde se mreža i telemetrija vide.
+  Key Concepts ×4: 🗺️ State space, 🔲 Discretization, 🌌 Curse of dimensionality,
+  ⛓️ Markov decision process. U navu „RL 2" / „РЛ 2" — s20.
+- **Prostor stanja — definicija (s20).** s19 je zapisao rezultate merenja ali NE i parametre;
+  sandbox je resetovan pa je recept izgubljen. Rastavi su definisani iznova (fina je
+  rekonstruisana pouzdano: 10×10×3×5×8 = stari Pong minus dimenzija protivničkog reketa):
+  gruba `5×5×2×3×2 = 300`, srednja `10×8×2×5×5 = 4.000`, fina `10×10×3×5×8 = 12.000`.
+  Apsolutni brojevi iz s19 tabele NISU uporedivi sa današnjim bez poznatih uslova merenja;
+  **uporediv je poredak**, i on je reprodukovan u browseru (s20, n=10): srednja 4,56 (dev 1,10),
+  fina 4,02 (dev 1,32) — po kvalitetu izjednačene, fina raspršenija.
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s18** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  Portal verzija u footeru: **s20** (`XP_VERSION` u `app.js` — cache-dijagnostika;
   sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
+  PAŽNJA: `XP_VERSION` pokriva SAMO `app.js`. `xpong.css` i `<page>.js` idu bez oznake
+  verzije, pa svež footer NE znači svež CSS/JS — otvorena stavka `?v=sNN` (s21, prio 1).
 - **Layout:** sve stranice dele okvir od 1200px (`#xp-page` /
   `#xp-header-inner`), pa su poravnate s nav-redom; igra je dodatno
   ograničena na `min(100%, 72vh)` (canvas je 800×500 sa `width:100%` i
@@ -59,18 +81,18 @@ jednu fazu razvoja.
   dimenzionalnosti). **Odluka: 4.000 podrazumevana na `rl2`**, gruba i fina kao
   izbori koji pokazuju šta se gubi u svakom smeru. Napomena: 72.000 iz starog
   Ponga nije reproducibilno bez dimenzije protivničkog reketa — fina je 12.000.
-- **Sledeće (s20):** implementacija **stranice 2 — `rl2`, agent koji UČI
-  (Q-learning)**. Dogovoren raspored: glavna kolona naslov → semafor → teren sa
-  mrežom stanja → deck (levo agent koji uči, centar Treniraj/Reset, desno
-  walker) → grubost (tri imenovane vrednosti, ne klizač) → grafikon → tri
-  pokazatelja; desna kolona 280px sa infoboxima, uključujući nov „Brzina
-  uređaja". **Jedan grafikon nosi dva pokazatelja:** svako pokretanje DODAJE
-  krivu preko prethodnih, pa razmak u snopu jeste pouzdanost — bez kompozitnog
-  broja. Grafikon mora nositi `max-width: min(100%, 72vh)` kao canvas i deck.
-  Auto-scroll do grafikona na početku treninga (pada ispod pregiba, a trening je
-  headless). Prvi korak implementacije: kontrola grubosti — jedini element bez
-  postojećeg obrasca (svi postojeći prekidači su on/off). Opseg je namerno uzak:
-  `rl2` = STANJE, `rl3` = UČENJE (Bellman, Q-tabela), `rl4` = EKSPLORACIJA.
+- **Sledeće (s21):** **`rl3` — UČENJE** (Bellman, Q-tabela kao vidljiv objekat,
+  telemetrija odluka agenta). Mehanika već postoji u `rl2.js` i prenosi se; novo je
+  *prikazivanje* pravila učenja, ne njegovo pisanje. Opseg dalje ostaje uzak:
+  `rl3` = UČENJE, `rl4` = EKSPLORACIJA.
+  **Otvorene stavke po prioritetu:** (1) cache-busting `?v=sNN` na `<link>`/`<script>`,
+  bumpuje se sa `XP_VERSION` — uzrok tri ručna čišćenja keša u s20; (2) infobox „Brzina
+  uređaja" na `rl2` — `stepsPerSec` se meri i prikazuje, ali adaptacija nije objašnjena,
+  a s19 uslov je da mora biti dokumentovana; (3) prio2: prekidači nose ime bez `on`/`off`
+  (Material/Apple/W3C — stanje čita položaj, tekst duplira signal), uz jače vizuelno
+  stanje; (4) prio2: JS benchmark na PC/tablet/telefon; (5) README PAŽNJA → dopisati
+  escape recept `grep -n "target" app.js | cat -A`; (6) kandidati: `sr.lat` aditivno,
+  Key Concepts iz About eseja.
 - **Samoštimovanje (dogovoreno s19):** trening u browseru koristi adaptivni
   paket epizoda po `requestAnimationFrame` (meri prethodni, drži ispod ~8 ms) —
   fiksan paket koji je na PC-u 3 ms na starijem telefonu traje 150 ms i zamrzava
@@ -78,7 +100,7 @@ jednu fazu razvoja.
   uređaja" sa izmerenim koraka/s); nedokumentovana adaptacija je crna kutija
   protiv koje je ceo X-Ray stav. Minimum hardvera je browser od ~2015; Q-tabela
   je 48 KB na 4.000 stanja. Sledi JS benchmark na PC/tablet/telefon.
-- **Nasleđeno:** naslovi („otom potom"); README PAŽNJA → dopisati escape recept.
+- **Nasleđeno:** README PAŽNJA → dopisati escape recept.
   Kandidati: sr.lat aditivno; Key Concepts iz About eseja (crna kutija,
   emergencija, neuronska mreža, transformer).
 
@@ -121,6 +143,8 @@ Granica pojma je obavezna: ono što je pojmovno ili istorijski odvojeno mora i k
     ├── xray.js              # M2 Telemetrija: render, drawRay, drawHeatmap
     ├── rl1.html             # M3 str.1 Random walker (klon xray + agent)
     ├── rl1.js               # M3 str.1: random-walker agent nad pong-core
+    ├── rl2.html             # M3 str.2 Prostor stanja (mreza, grubost, grafikon)
+    ├── rl2.js               # M3 str.2: GRIDS, encodeState, Q-jezgro, trening, grafikon
     ├── xpong.css            # deljeni stil (adaptiran iz buchenberg.css)
     ├── app.js               # i18n + chrome + teme; XP_VERSION; renderConcepts
     ├── favicon.svg          # Pong motiv (injektuje se iz app.js)

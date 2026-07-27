@@ -90,8 +90,7 @@ jednu fazu razvoja.
   uređaja" na `rl2` — `stepsPerSec` se meri i prikazuje, ali adaptacija nije objašnjena,
   a s19 uslov je da mora biti dokumentovana; (3) prio2: prekidači nose ime bez `on`/`off`
   (Material/Apple/W3C — stanje čita položaj, tekst duplira signal), uz jače vizuelno
-  stanje; (4) prio2: JS benchmark na PC/tablet/telefon; (5) README PAŽNJA → dopisati
-  escape recept `grep -n "target" app.js | cat -A`; (6) kandidati: `sr.lat` aditivno,
+  stanje; (4) prio2: JS benchmark na PC/tablet/telefon; (5) kandidati: `sr.lat` aditivno,
   Key Concepts iz About eseja.
 - **Samoštimovanje (dogovoreno s19):** trening u browseru koristi adaptivni
   paket epizoda po `requestAnimationFrame` (meri prethodni, drži ispod ~8 ms) —
@@ -100,9 +99,9 @@ jednu fazu razvoja.
   uređaja" sa izmerenim koraka/s); nedokumentovana adaptacija je crna kutija
   protiv koje je ceo X-Ray stav. Minimum hardvera je browser od ~2015; Q-tabela
   je 48 KB na 4.000 stanja. Sledi JS benchmark na PC/tablet/telefon.
-- **Nasleđeno:** README PAŽNJA → dopisati escape recept.
-  Kandidati: sr.lat aditivno; Key Concepts iz About eseja (crna kutija,
-  emergencija, neuronska mreža, transformer).
+- **Nasleđeno:** kandidati sr.lat aditivno; Key Concepts iz About eseja (crna
+  kutija, emergencija, neuronska mreža, transformer). Zatvoreno u s21: escape
+  recept dokumentovan u `docs/KAKO-JeziciUI.md` §4.
 
 ## Infrastruktura
 - **Server:** `foxuno.dynu.net` (Ubuntu), javni IP `130.61.37.60`, user `balsam`.
@@ -131,6 +130,8 @@ Granica pojma je obavezna: ono što je pojmovno ili istorijski odvojeno mora i k
     ├── health_check.py      # health snapshot (git, struktura, concepts.json, DNS, live site, apache)
     └── docs/
         ├── PongPregledProjekta.md   # retrospektiva prethodnog Pong projekta
+        ├── KAKO-KeyConcepts.md      # recept: Key Concepts/Wikipedia kartice (izveden iz buchenberga, s21)
+        ├── KAKO-JeziciUI.md         # recept: višejezični UI, data-i18n mehanizam (izveden iz buchenberga, s21)
         └── sessions/                # hronološki zapisi (session_NN.md)
 
     xpongweb/                # web repo (/var/www/xpong)

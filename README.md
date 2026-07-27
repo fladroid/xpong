@@ -45,25 +45,31 @@ jednu fazu razvoja.
   **Mreža stanja** preko terena crta X×Y — dve od pet dimenzija; smer, brzina i položaj
   levog reketa ulaze u broj stanja ali nemaju mesto na terenu (nije propust — različite
   dimenzije traže različit oblik prikaza, ne sve idu na teren; potvrđeno s21).
-  **Tabela od šest vrednosti** (iznad terena, vodoravan red — s21): Ball X, Ball Y,
-  Direction, Speed, Left paddle (ulazi u state broj — bold), Right paddle (NE ulazi —
-  bleđe, isprekidana ivica). Reket identifikovan po strani, ne po ulozi (ista lekcija
-  kao goalL/goalR iz s10). Zamenila stari canvas-crtan `state N/total` tekst.
+  **Tabela od šest vrednosti** (iznad terena, vodoravan red): Ball X, Ball Y,
+  Horizontal move, Vertical move (imenovanje ispravljeno s22 — "Direction"/"Speed"
+  su implicirali kategoriju/fizičku jedinicu koje predznačene binovane komponente
+  brzine ne nose), Left paddle (ulazi u state broj — bold), Right paddle (NE ulazi
+  — bleđe, isprekidana ivica). PAŽNJA: `Ball X`/`Ball Y`/`Left paddle`/`Right paddle`
+  su i dalje ključevi SAMO u EN bloku `app.js` (otkriveno s22) — DE/IT/HR/SR tiho
+  padaju na engleski za te četiri vrednosti; `Horizontal move`/`Vertical move` su
+  jedina dva reda od šest prevedena na svih 5 jezika.
   **Grubost** = segmentirani prekidač s tri imenovane vrednosti, `4000` podrazumevano.
-  **Trening** je headless, adaptivni paket po `rAF` (cilj < 8 ms), greedy evaluacija
-  odvojena od treninga. **Grafikon**: svako pokretanje DODAJE krivu i crta se UŽIVO
-  dok trening traje (svaki `rAF` frejm); tri pokazatelja — kvalitet, rasejanje (std.
-  devijacija), koraka/s.
-  **Otvoren arhitektonski problem (s21, glavni prioritet — vidi Sledeće):** uživo
-  Start/Human/Walker slobodna igra NIKAD ne koristi naučenu Q-tabelu — `step()`
-  poziva `applyAgent()` (čist `Math.random()`) čak i kad je levi prekidač na "Agent";
-  `qAction()` se poziva SAMO unutar headless `runEpisode()`. Slobodna igra time
-  duplira `rl1` bez stvarne veze sa treningom — dogovoreno rešenje: ukloniti je,
-  animirati periodične evaluacione epizode uživo umesto nje.
+  **Trening** je headless, adaptivni paket po `rAF` (cilj < 8 ms). Svakih 500 epizoda
+  greedy evaluacija se meri headless ZA grafik, i JEDNA evaluaciona epizoda se dodatno
+  odigra UŽIVO na terenu — mreža/tabela/beam/heatmap u realnom vremenu, ~12.5% brže
+  od fizičkog vremena preko frakcionog step-akumulatora (s22 redizajn, zamenila staru
+  slobodnu Start/Human/Walker igru koja NIKAD nije koristila naučenu Q-tabelu — pun
+  opis problema i rešenja u `docs/sessions/session_22.md`). `Reset` briše CEO trening
+  (Q-tabela, krive, grafikon), ne samo jednu partiju.
+  **Grafikon**: naslov + natpis koji imenuje X/Y osu i vezuje je za stat
+  "returns/episode" ispod (s22); svako pokretanje DODAJE krivu; tri pokazatelja —
+  kvalitet, rasejanje (std. devijacija), koraka/s.
+  Sidebar: **"State space"** + **"Reading the results"** infoboxi (s22, zamenili
+  stari jedinstveni "This page" tekst koji je opisivao ukinutu slobodnu igru).
   Key Concepts ×4: 🗺️ State space, 🔲 Discretization, 🌌 Curse of dimensionality,
-  ⛓️ Markov decision process — dogovoren anchor u vidljivom tekstu (novi "State
-  space" infobox), tekst DOGOVOREN ali NIJE upisan (čeka arhitektonsku odluku iznad,
-  da se ne piše za deck koji će se ukloniti). U navu „RL 2" / „РЛ 2" — s20.
+  ⛓️ Markov decision process — anchor dogovoren, **tekst i dalje NIJE upisan u
+  `concepts.json`** (nezavisno od s22 redizajna, i dalje otvoreno). U navu „RL 2" /
+  „РЛ 2" — s20.
 - **Prostor stanja — definicija (s20).** s19 je zapisao rezultate merenja ali NE i parametre;
   sandbox je resetovan pa je recept izgubljen. Rastavi su definisani iznova (fina je
   rekonstruisana pouzdano: 10×10×3×5×8 = stari Pong minus dimenzija protivničkog reketa):
@@ -72,7 +78,7 @@ jednu fazu razvoja.
   **uporediv je poredak**, i on je reprodukovan u browseru (s20, n=10): srednja 4,56 (dev 1,10),
   fina 4,02 (dev 1,32) — po kvalitetu izjednačene, fina raspršenija.
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s21** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  Portal verzija u footeru: **s22** (`XP_VERSION` u `app.js` — cache-dijagnostika;
   sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
   PAŽNJA: `XP_VERSION` pokriva SAMO `app.js`. `xpong.css` i `<page>.js` idu bez oznake
   verzije, pa svež footer NE znači svež CSS/JS — otvorena stavka `?v=sNN` (s21, prio 1).
@@ -95,30 +101,27 @@ jednu fazu razvoja.
   dimenzionalnosti). **Odluka: 4.000 podrazumevana na `rl2`**, gruba i fina kao
   izbori koji pokazuju šta se gubi u svakom smeru. Napomena: 72.000 iz starog
   Ponga nije reproducibilno bez dimenzije protivničkog reketa — fina je 12.000.
-- **Sledeće (s22) — GLAVNI PRIORITET, otkriveno u s21:** `rl2` redizajn.
-  Uživo Start/Human/Walker slobodna igra duplira `rl1` bez stvarne veze sa treningom
-  (`qAction()` se nikad ne poziva uživo). Plan: (1) ukloniti slobodnu igru (Start
-  dugme, Human/Walker izbor za levi reket); (2) animirati periodične evaluacione
-  epizode (`evaluate()`, svakih 500 epizoda) UŽIVO na terenu — mreža, istaknuta
-  ćelija, telemetrija — sinhronizovano sa svakom novom tačkom na grafiku; bulk
-  trening (500 epizoda učenja između evaluacija) ostaje headless; (3) tek POSLE
-  ovoga pisati dogovorene sadržajne izmene (naslov grafika, "State space"/"Reading
-  the results" infoboxi) — tekst mora opisivati stvarnu stranicu, ne staru. Detalji
-  i puno obrazloženje u `docs/sessions/session_21.md` §9–12.
-  Zatim: **`rl3` — UČENJE** (Bellman, Q-tabela kao vidljiv objekat, telemetrija
-  odluka agenta). Mehanika već postoji u `rl2.js` i prenosi se; novo je
-  *prikazivanje* pravila učenja, ne njegovo pisanje. Opseg dalje ostaje uzak:
-  `rl3` = UČENJE, `rl4` = EKSPLORACIJA.
+- **Sledeće (s23) — GLAVNI PRAVAC:** `rl3` — UČENJE. Bellman jednačina, Q-tabela
+  kao vidljiv objekat, telemetrija agentovih odluka. Mehanika (Q-jezgro,
+  `encodeState`, trening petlja, evaluate/live-eval obrazac) već postoji u `rl2.js`
+  i prenosi se skoro nepromenjena — novo je *prikazivanje* pravila učenja, ne
+  pisanje nove mehanike učenja. Opseg dalje ostaje uzak: `rl3` = UČENJE,
+  `rl4` = EKSPLORACIJA. **Ne preskočiti ovo na početku sledeće sesije.**
+  `rl2` redizajn (uklonjena slobodna igra, dodata live evaluacija, sadržaj,
+  imenovanje) je ZATVOREN u s22 — pun opis u `docs/sessions/session_22.md`.
   **Ostale otvorene stavke po prioritetu:** (1) cache-busting `?v=sNN` na
   `<link>`/`<script>`, bumpuje se sa `XP_VERSION` — uzrok tri ručna čišćenja keša u
-  s20; (2) prio2: aktivna provera verzije (`version.json` + `visibilitychange` +
-  baner „Nova verzija dostupna") — rešava tablet slučaj gde pull-to-refresh nije
-  pouzdan, videti `KAKO-Cache.md` §5; (3) infobox „Brzina uređaja" na `rl2` —
-  `stepsPerSec` se meri i prikazuje, ali adaptacija nije objašnjena, a s19 uslov je
-  da mora biti dokumentovana; (4) prio2: prekidači nose ime bez `on`/`off`
-  (Material/Apple/W3C — stanje čita položaj, tekst duplira signal), uz jače
-  vizuelno stanje; (5) prio2: JS benchmark na PC/tablet/telefon; (6) kandidati:
-  `sr.lat` aditivno, Key Concepts iz About eseja.
+  s20; (2) `r2_dim_ballx`/`r2_dim_bally`/`r2_dim_leftpad`/`r2_dim_rightpad` na `rl2`
+  i dalje SAMO na engleskom za DE/IT/HR/SR (otkriveno s22, ista bug-klasa kao
+  Direction/Speed koje su te sesije ispravljene); (3) prio2: aktivna provera verzije
+  (`version.json` + `visibilitychange` + baner „Nova verzija dostupna") — rešava
+  tablet slučaj gde pull-to-refresh nije pouzdan, videti `KAKO-Cache.md` §5;
+  (4) infobox „Brzina uređaja" na `rl2` — `stepsPerSec` se meri i prikazuje, ali
+  adaptacija nije objašnjena, a s19 uslov je da mora biti dokumentovana; (5) prio2:
+  prekidači nose ime bez `on`/`off` (Material/Apple/W3C — stanje čita položaj, tekst
+  duplira signal), uz jače vizuelno stanje; (6) prio2: JS benchmark na PC/tablet/
+  telefon; (7) kandidati: `sr.lat` aditivno, Key Concepts iz About eseja i iz `rl2`
+  (`concepts.json` sekcija `rl2` — anchor dogovoren, tekst nije upisan).
 - **Samoštimovanje (dogovoreno s19):** trening u browseru koristi adaptivni
   paket epizoda po `requestAnimationFrame` (meri prethodni, drži ispod ~8 ms) —
   fiksan paket koji je na PC-u 3 ms na starijem telefonu traje 150 ms i zamrzava

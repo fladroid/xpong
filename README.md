@@ -86,12 +86,14 @@ jednu fazu razvoja.
   *prikazivanje* pravila učenja, ne njegovo pisanje. Opseg dalje ostaje uzak:
   `rl3` = UČENJE, `rl4` = EKSPLORACIJA.
   **Otvorene stavke po prioritetu:** (1) cache-busting `?v=sNN` na `<link>`/`<script>`,
-  bumpuje se sa `XP_VERSION` — uzrok tri ručna čišćenja keša u s20; (2) infobox „Brzina
-  uređaja" na `rl2` — `stepsPerSec` se meri i prikazuje, ali adaptacija nije objašnjena,
-  a s19 uslov je da mora biti dokumentovana; (3) prio2: prekidači nose ime bez `on`/`off`
-  (Material/Apple/W3C — stanje čita položaj, tekst duplira signal), uz jače vizuelno
-  stanje; (4) prio2: JS benchmark na PC/tablet/telefon; (5) kandidati: `sr.lat` aditivno,
-  Key Concepts iz About eseja.
+  bumpuje se sa `XP_VERSION` — uzrok tri ručna čišćenja keša u s20; (2) prio2: aktivna
+  provera verzije (`version.json` + `visibilitychange` + baner „Nova verzija dostupna") —
+  rešava tablet slučaj gde pull-to-refresh nije pouzdan, videti `KAKO-Cache.md` §5; (3)
+  infobox „Brzina uređaja" na `rl2` — `stepsPerSec` se meri i prikazuje, ali adaptacija
+  nije objašnjena, a s19 uslov je da mora biti dokumentovana; (4) prio2: prekidači nose
+  ime bez `on`/`off` (Material/Apple/W3C — stanje čita položaj, tekst duplira signal), uz
+  jače vizuelno stanje; (5) prio2: JS benchmark na PC/tablet/telefon; (6) kandidati:
+  `sr.lat` aditivno, Key Concepts iz About eseja.
 - **Samoštimovanje (dogovoreno s19):** trening u browseru koristi adaptivni
   paket epizoda po `requestAnimationFrame` (meri prethodni, drži ispod ~8 ms) —
   fiksan paket koji je na PC-u 3 ms na starijem telefonu traje 150 ms i zamrzava
@@ -134,6 +136,7 @@ Granica pojma je obavezna: ono što je pojmovno ili istorijski odvojeno mora i k
         ├── KAKO-JeziciUI.md         # recept: višejezični UI, data-i18n mehanizam (izveden iz buchenberga, s21)
         ├── KAKO-Session.md          # meta-recept: pisanje/zatvaranje session_NN.md (s21)
         ├── KAKO-README.md           # meta-recept: ažuriranje README.md (s21)
+        ├── KAKO-Cache.md            # dijagnoza keš/verzija problema, PC i tablet (s21)
         └── sessions/                # hronološki zapisi (session_NN.md)
 
     xpongweb/                # web repo (/var/www/xpong)

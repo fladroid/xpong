@@ -132,6 +132,8 @@ Granica pojma je obavezna: ono što je pojmovno ili istorijski odvojeno mora i k
         ├── PongPregledProjekta.md   # retrospektiva prethodnog Pong projekta
         ├── KAKO-KeyConcepts.md      # recept: Key Concepts/Wikipedia kartice (izveden iz buchenberga, s21)
         ├── KAKO-JeziciUI.md         # recept: višejezični UI, data-i18n mehanizam (izveden iz buchenberga, s21)
+        ├── KAKO-Session.md          # meta-recept: pisanje/zatvaranje session_NN.md (s21)
+        ├── KAKO-README.md           # meta-recept: ažuriranje README.md (s21)
         └── sessions/                # hronološki zapisi (session_NN.md)
 
     xpongweb/                # web repo (/var/www/xpong)

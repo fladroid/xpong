@@ -37,19 +37,33 @@ jednu fazu razvoja.
   agent preko `.xp-toggle` mode-prekidača. Zrak/heatmap čitaju SVET (putanja, golovi),
   ne agenta — uma još nema. Infobox „This page — RL 1" + Navigacija (i18n `r1_*` ožičen ×5, s16). Key Concepts ×3: 🧠 Reinforcement learning, 🤖 Agent, 🎲 Random walk (`concepts.json` sekcija `rl1`).
   U navu ("RL 1" / "РЛ 1", između Telemetrije i Stabilization) — s17.
+  Desni natpis "Agent" (tvrdo ukucan, bez i18n) zamenjen sa "Random walker"
+  (pravi `g_legend_right_walker` ključ) — s21, ista izmena kao na `rl2`,
+  razlog: reč "Agent" je na `rl2` počela da znači i Q-learning proces.
 - **M3 stranica 2 — `rl2`** (`rl2.html`/`rl2.js`, `data-page="rl2"`, prefiks `r2_`;
   naslov „RL 2 — How the agent sees the world"): tema je **STANJE**, ne učenje.
-  Levi reket je agent koji uči (tabelarni Q), desni je random walker s prethodne stranice.
   **Mreža stanja** preko terena crta X×Y — dve od pet dimenzija; smer, brzina i položaj
-  sopstvenog reketa ulaze u broj stanja ali nemaju mesto na terenu (to je poenta, ne propust).
-  Pregrada s lopticom se ističe; gore levo `state N / ukupno` — ceo svet agenta kao jedan ceo broj.
-  **Grubost** = segmentirani prekidač s tri imenovane vrednosti (ime iznad, broj ispod),
-  `4000` podrazumevano u markupu. **Trening** je headless, adaptivni paket po `rAF` (cilj < 8 ms),
-  greedy evaluacija odvojena od treninga. **Grafikon**: svako pokretanje DODAJE krivu;
-  tri pokazatelja — kvalitet, rasejanje (std. devijacija), koraka/s. `Start` zadržan pored
-  `Train` jer je igra uživo jedino mesto gde se mreža i telemetrija vide.
+  levog reketa ulaze u broj stanja ali nemaju mesto na terenu (nije propust — različite
+  dimenzije traže različit oblik prikaza, ne sve idu na teren; potvrđeno s21).
+  **Tabela od šest vrednosti** (iznad terena, vodoravan red — s21): Ball X, Ball Y,
+  Direction, Speed, Left paddle (ulazi u state broj — bold), Right paddle (NE ulazi —
+  bleđe, isprekidana ivica). Reket identifikovan po strani, ne po ulozi (ista lekcija
+  kao goalL/goalR iz s10). Zamenila stari canvas-crtan `state N/total` tekst.
+  **Grubost** = segmentirani prekidač s tri imenovane vrednosti, `4000` podrazumevano.
+  **Trening** je headless, adaptivni paket po `rAF` (cilj < 8 ms), greedy evaluacija
+  odvojena od treninga. **Grafikon**: svako pokretanje DODAJE krivu i crta se UŽIVO
+  dok trening traje (svaki `rAF` frejm); tri pokazatelja — kvalitet, rasejanje (std.
+  devijacija), koraka/s.
+  **Otvoren arhitektonski problem (s21, glavni prioritet — vidi Sledeće):** uživo
+  Start/Human/Walker slobodna igra NIKAD ne koristi naučenu Q-tabelu — `step()`
+  poziva `applyAgent()` (čist `Math.random()`) čak i kad je levi prekidač na "Agent";
+  `qAction()` se poziva SAMO unutar headless `runEpisode()`. Slobodna igra time
+  duplira `rl1` bez stvarne veze sa treningom — dogovoreno rešenje: ukloniti je,
+  animirati periodične evaluacione epizode uživo umesto nje.
   Key Concepts ×4: 🗺️ State space, 🔲 Discretization, 🌌 Curse of dimensionality,
-  ⛓️ Markov decision process. U navu „RL 2" / „РЛ 2" — s20.
+  ⛓️ Markov decision process — dogovoren anchor u vidljivom tekstu (novi "State
+  space" infobox), tekst DOGOVOREN ali NIJE upisan (čeka arhitektonsku odluku iznad,
+  da se ne piše za deck koji će se ukloniti). U navu „RL 2" / „РЛ 2" — s20.
 - **Prostor stanja — definicija (s20).** s19 je zapisao rezultate merenja ali NE i parametre;
   sandbox je resetovan pa je recept izgubljen. Rastavi su definisani iznova (fina je
   rekonstruisana pouzdano: 10×10×3×5×8 = stari Pong minus dimenzija protivničkog reketa):
@@ -58,7 +72,7 @@ jednu fazu razvoja.
   **uporediv je poredak**, i on je reprodukovan u browseru (s20, n=10): srednja 4,56 (dev 1,10),
   fina 4,02 (dev 1,32) — po kvalitetu izjednačene, fina raspršenija.
 - **Web:** `https://xpong.opik.net` živ (apache2 + Let's Encrypt, auto-renew).
-  Portal verzija u footeru: **s20** (`XP_VERSION` u `app.js` — cache-dijagnostika;
+  Portal verzija u footeru: **s21** (`XP_VERSION` u `app.js` — cache-dijagnostika;
   sufiks `sNN.M` se koristi u toku sesije za razlučivanje keša od kvara).
   PAŽNJA: `XP_VERSION` pokriva SAMO `app.js`. `xpong.css` i `<page>.js` idu bez oznake
   verzije, pa svež footer NE znači svež CSS/JS — otvorena stavka `?v=sNN` (s21, prio 1).
@@ -81,18 +95,29 @@ jednu fazu razvoja.
   dimenzionalnosti). **Odluka: 4.000 podrazumevana na `rl2`**, gruba i fina kao
   izbori koji pokazuju šta se gubi u svakom smeru. Napomena: 72.000 iz starog
   Ponga nije reproducibilno bez dimenzije protivničkog reketa — fina je 12.000.
-- **Sledeće (s21):** **`rl3` — UČENJE** (Bellman, Q-tabela kao vidljiv objekat,
-  telemetrija odluka agenta). Mehanika već postoji u `rl2.js` i prenosi se; novo je
+- **Sledeće (s22) — GLAVNI PRIORITET, otkriveno u s21:** `rl2` redizajn.
+  Uživo Start/Human/Walker slobodna igra duplira `rl1` bez stvarne veze sa treningom
+  (`qAction()` se nikad ne poziva uživo). Plan: (1) ukloniti slobodnu igru (Start
+  dugme, Human/Walker izbor za levi reket); (2) animirati periodične evaluacione
+  epizode (`evaluate()`, svakih 500 epizoda) UŽIVO na terenu — mreža, istaknuta
+  ćelija, telemetrija — sinhronizovano sa svakom novom tačkom na grafiku; bulk
+  trening (500 epizoda učenja između evaluacija) ostaje headless; (3) tek POSLE
+  ovoga pisati dogovorene sadržajne izmene (naslov grafika, "State space"/"Reading
+  the results" infoboxi) — tekst mora opisivati stvarnu stranicu, ne staru. Detalji
+  i puno obrazloženje u `docs/sessions/session_21.md` §9–12.
+  Zatim: **`rl3` — UČENJE** (Bellman, Q-tabela kao vidljiv objekat, telemetrija
+  odluka agenta). Mehanika već postoji u `rl2.js` i prenosi se; novo je
   *prikazivanje* pravila učenja, ne njegovo pisanje. Opseg dalje ostaje uzak:
   `rl3` = UČENJE, `rl4` = EKSPLORACIJA.
-  **Otvorene stavke po prioritetu:** (1) cache-busting `?v=sNN` na `<link>`/`<script>`,
-  bumpuje se sa `XP_VERSION` — uzrok tri ručna čišćenja keša u s20; (2) prio2: aktivna
-  provera verzije (`version.json` + `visibilitychange` + baner „Nova verzija dostupna") —
-  rešava tablet slučaj gde pull-to-refresh nije pouzdan, videti `KAKO-Cache.md` §5; (3)
-  infobox „Brzina uređaja" na `rl2` — `stepsPerSec` se meri i prikazuje, ali adaptacija
-  nije objašnjena, a s19 uslov je da mora biti dokumentovana; (4) prio2: prekidači nose
-  ime bez `on`/`off` (Material/Apple/W3C — stanje čita položaj, tekst duplira signal), uz
-  jače vizuelno stanje; (5) prio2: JS benchmark na PC/tablet/telefon; (6) kandidati:
+  **Ostale otvorene stavke po prioritetu:** (1) cache-busting `?v=sNN` na
+  `<link>`/`<script>`, bumpuje se sa `XP_VERSION` — uzrok tri ručna čišćenja keša u
+  s20; (2) prio2: aktivna provera verzije (`version.json` + `visibilitychange` +
+  baner „Nova verzija dostupna") — rešava tablet slučaj gde pull-to-refresh nije
+  pouzdan, videti `KAKO-Cache.md` §5; (3) infobox „Brzina uređaja" na `rl2` —
+  `stepsPerSec` se meri i prikazuje, ali adaptacija nije objašnjena, a s19 uslov je
+  da mora biti dokumentovana; (4) prio2: prekidači nose ime bez `on`/`off`
+  (Material/Apple/W3C — stanje čita položaj, tekst duplira signal), uz jače
+  vizuelno stanje; (5) prio2: JS benchmark na PC/tablet/telefon; (6) kandidati:
   `sr.lat` aditivno, Key Concepts iz About eseja.
 - **Samoštimovanje (dogovoreno s19):** trening u browseru koristi adaptivni
   paket epizoda po `requestAnimationFrame` (meri prethodni, drži ispod ~8 ms) —

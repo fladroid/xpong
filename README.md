@@ -101,15 +101,42 @@ jednu fazu razvoja.
   dimenzionalnosti). **Odluka: 4.000 podrazumevana na `rl2`**, gruba i fina kao
   izbori koji pokazuju šta se gubi u svakom smeru. Napomena: 72.000 iz starog
   Ponga nije reproducibilno bez dimenzije protivničkog reketa — fina je 12.000.
-- **Sledeće (s23) — GLAVNI PRAVAC:** `rl3` — UČENJE. Bellman jednačina, Q-tabela
-  kao vidljiv objekat, telemetrija agentovih odluka. Mehanika (Q-jezgro,
-  `encodeState`, trening petlja, evaluate/live-eval obrazac) već postoji u `rl2.js`
-  i prenosi se skoro nepromenjena — novo je *prikazivanje* pravila učenja, ne
-  pisanje nove mehanike učenja. Opseg dalje ostaje uzak: `rl3` = UČENJE,
-  `rl4` = EKSPLORACIJA. **Ne preskočiti ovo na početku sledeće sesije.**
-  `rl2` redizajn (uklonjena slobodna igra, dodata live evaluacija, sadržaj,
-  imenovanje) je ZATVOREN u s22 — pun opis u `docs/sessions/session_22.md`.
-  **Ostale otvorene stavke po prioritetu:** (1) cache-busting `?v=sNN` na
+- **Sesija 23 (29. jul, planiranje, bez izmena koda):** Naslov `rl3` odlučen —
+  "RL 3 — How the agent learns". Tri odluke: grid prekidač (Coarse/Medium/Fine)
+  se NE prenosi na `rl3` (fiksno 4.000); beam/heatmap OSTAJU; explore/exploit
+  telemetrija odbačena kao poseban mehanizam (epsilon samo tekstualno u
+  infoboksu). Verifikacija u `rl2.js` ispravila raniju pretpostavku: `qUpdate()`
+  (Bellman) poziva se ISKLJUČIVO u headless bulk treningu, ne u live-eval —
+  Q-bar panel (čitanje trenutnih Q-vrednosti) veže se za live-eval, Bellman
+  panel (formula sa upisanim brojevima) veže se za headless bulk fazu. Pun
+  grafikon sa krivama na `rl3` izbačen — ostaju samo tri postojeća pokazatelja
+  (returns/episode, spread, steps/s). Human vs Agent / Agent vs Agent nije
+  planirano ni za `rl3` ni za `rl4` (proveren grep, `rl4` postoji samo kao ime
+  "EKSPLORACIJA", bez detalja; nema M4/M5 plana u projektu).
+- **Odluka: `localStorage` perzistencija između `rl2` i `rl3` (s23).** Flaviov
+  princip: podaci se generišu na JEDNOM mestu (`rl2`); potrošač (`rl3`) ili čita
+  ili je deaktiviran sa linkom nazad. Za masovne/trening podatke: INSERT/DELETE/
+  APPEND da, izmena pojedinačnog sloga ne. Konkretno: `rl2` (Train = insert,
+  Reset = delete) upisuje `localStorage['xpong_qtable_4000']` SAMO kad trening
+  kompletno završi (12.000 epizoda) — Q-tabela (48 KB) + log od ~24 uhvaćena
+  Bellman update-a (jedan na svakih 500 epizoda, isti ritam kao `evaluate()`).
+  `rl3` nema NIJEDNO dugme koje trenira — čist potrošač; ako zapis ne postoji,
+  regija je deaktivirana + link na `rl2`. Oba nusprodukta moraju biti vidljivo
+  dokumentovana na obe stranice (infobox), ne tiha adaptacija. Pun opis u
+  `docs/sessions/session_23.md`.
+- **Sledeće (s24) — GLAVNI PRAVAC, dva koraka po redu:** (1) izmene na
+  POSTOJEĆOJ `rl2` — `localStorage` upis (Q-tabela + log update-a) na kraju
+  kompletnog treninga, Reset briše zapis, dopuna infoboksa (×5 jezika);
+  testirati na `rl2` PRE bilo čega drugog. (2) tek posle toga kreirati `rl3` —
+  klon `rl2` sa identitetom (naslov "RL 3 — How the agent learns",
+  `data-page="rl3"`, prefiks `r3_`), bez grid prekidača, bez dugmadi koje
+  treniraju, provera `localStorage` pri učitavanju (deaktivirana regija + link
+  ako ne postoji), Bellman panel (iz sačuvanog loga) + Q-bar panel (live-eval
+  čitanje) + tri broja bez punog grafikona, infobox sa linkom na `rl2` kao
+  izvor. Key Concepts kandidati: Bellman equation, Q-value/Q-function, temporal
+  difference learning (slugovi nisu još provereni). **Ne preskočiti redosled —
+  rl2 pre rl3.** Pun plan u `docs/sessions/session_23.md`.
+- **Otvorene stavke, nepromenjen prioritet:** (1) cache-busting `?v=sNN` na
   `<link>`/`<script>`, bumpuje se sa `XP_VERSION` — uzrok tri ručna čišćenja keša u
   s20; (2) `r2_dim_ballx`/`r2_dim_bally`/`r2_dim_leftpad`/`r2_dim_rightpad` na `rl2`
   i dalje SAMO na engleskom za DE/IT/HR/SR (otkriveno s22, ista bug-klasa kao
